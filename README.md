@@ -34,7 +34,7 @@ only for the nodes corresponding to certain purposes.
 The purposes for whom we plan to compute the cost metrics are:
 
 - compN: Run the KOS connection agent
-- nctrlN: Run the KOS central controllers
+- nctrlN: Run the KOS central controllers (including etcd operator for KOS etcd servers)
 - napiN: Run the KOS network-apiserver
 - netcdN: Run the KOS etcd servers
 - kctrlN: Run the Kubernetes central controllers (including the scheduler)
@@ -45,20 +45,21 @@ The purposes for whom we won't compute the cost metrics are:
 
 - base: Operations base & run the driver
 - obs: Run centralized logs/metrics services (if we have any of these)
-- netcdOp: Run the operator that manages the KOS etcd cluster
 
 ### Development configuration
 
-20 VMs on a host with 64 "CPUs" and 512 GB of memory.
+One L0 host with 64 "CPUs", 512 GB of main memory, and no persistent storage.
+L1 disks are implemented by QCOW2 that is backed by L0 memory.
+Thus, L0 memory consumption by L1 disks grows over time according to usage.
+20 L1 nodes.
 
 | purpose | number | CPUs | mem GB |
 | ------- | ------ | ---- | ------ |
 | base    |   1    |   4  |   32   |
-| ketcd   |   3    |   4  |   20   |
-| kapi    |   1    |   4  |   20   |
-| kctrl   |   1    |   2  |   20   |
-| netcd   |   3    |   4  |   20   |
-| netcdOp |   1    |   2  |   20   |
-| napi    |   1    |   4  |   20   |
-| nctrl   |   1    |   2  |   20   |
-| comp    |   8    |   2  |   20   |
+| ketcd   |   3    |   4  |   12   |
+| kapi    |   1    |   4  |   12   |
+| kctrl   |   1    |   2  |   12   |
+| netcd   |   3    |   4  |   12   |
+| napi    |   1    |   4  |   12   |
+| nctrl   |   1    |   2  |   12   |
+| comp    |   9    |   2  |    8   |
