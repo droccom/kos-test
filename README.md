@@ -6,7 +6,7 @@ This repo is about scale-testing of https://github.com/MikeSpreitzer/kube-exampl
 
 ### Independent variables
 
-- OPS: average operations per second from driver during cruise phase
+- OPS: average operations per second from driver during cruise phase.
 
 - NCA: number of connection agents.  Values: 600, 1200, 1800.
 
@@ -37,7 +37,7 @@ run KOS or Kubernetes components.
 - nctrlN: Run the KOS central controllers
 - napiN: Run the KOS network-apiserver
 - netcdN: Run the KOS etcd servers
-- kctrlN: Run the Kubernetes central controllers
+- kctrlN: Run the Kubernetes central controllers (including the scheduler)
 - kapiN: Run the kube-apiservers
 - ketcdN: Run the kube etcd servers
 
