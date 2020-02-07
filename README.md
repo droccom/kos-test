@@ -33,10 +33,25 @@ run KOS or Kubernetes components.
 
 - base: Operations base & run the driver
 - obs: Run centralized logs/metrics services (if we have any of these)
-- compNNNN: Run the KOS connection agent
+- compN: Run the KOS connection agent
 - nctrlN: Run the KOS central controllers
 - napiN: Run the KOS network-apiserver
 - netcdN: Run the KOS etcd servers
 - kctrlN: Run the Kubernetes central controllers
 - kapiN: Run the kube-apiservers
 - ketcdN: Run the kube etcd servers
+
+### Development configuration
+
+20 VMs on a host with 64 "CPUs" and 512 GB of memory.
+
+| purpose | number | CPUs | mem GB |
+| ------- | ------ | ---- | ------ |
+| base    |   1    |   4  |   32   |
+| ketcd   |   3    |   4  |   20   |
+| kapi    |   1    |   4  |   20   |
+| kctrl   |   1    |   2  |   20   |
+| netcd   |   3    |   4  |   20   |
+| napi    |   1    |   4  |   20   |
+| nctrl   |   1    |   2  |   20   |
+| comp    |   9    |   2  |   20   |
