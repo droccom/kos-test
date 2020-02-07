@@ -21,7 +21,7 @@ This repo is about scale-testing of https://github.com/MikeSpreitzer/kube-exampl
 We have two sorts of dependent variables: global and per-node.  There is one global dependent variable: latency from
 (a) when the client starts to make a request to (b) when the connection agent fulfils the request.
 
-The per-node varibles are the following cost metrics.
+The per-node variables are the following cost metrics.
 
 - CPU usage
 - memory usage
