@@ -12,9 +12,9 @@ This repo is about scale-testing of https://github.com/MikeSpreitzer/kube-exampl
 
 - POP: cruise phase nominal number of NetworkAttachments.  Values 1X, 3X, 9X for as big an X as we can manage.
 
-- NKA: number of kube-apiservers.  Values: 1, 3, 9.
-
 - NNA: number of network-apiservers.  Values: 1, 3, 9.
+
+- NKA: number of kube-apiservers.  Values: 1, 3, 9 if it's interesting; just 3 if not.
 
 ### Dependent variables
 
