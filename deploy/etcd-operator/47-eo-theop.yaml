@@ -12,6 +12,7 @@ spec:
     metadata:
       labels:
         name: etcd-operator
+        role.kos.example.com/control: "true"
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "8080"
@@ -19,6 +20,13 @@ spec:
       securityContext:
         runAsUser: 1000
         fsGroup: 1000
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - topologyKey: kubernetes.io/hostname
+            labelSelector:
+              matchLabels:
+                role.kos.example.com/control: "true"
       nodeSelector:
         role.kos.example.com/control: "true"
       containers:

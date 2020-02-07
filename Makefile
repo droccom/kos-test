@@ -1,22 +1,7 @@
-DOCKER_PREFIX=${LOGNAME}
-KOS_PERSIST=${HOME}/.kos
+KOS_PERSIST=${HOME}/.kos-perf-study
 
 clean:
-	rm -f deploy/main/[57]0-*
 	rm -rf "${KOS_PERSIST}/tls"
-
-deploy/main/50-d-xs.yaml: deploy.m4/main/50-d-xs.yaml.m4
-	m4 -DDOCKER_PREFIX=${DOCKER_PREFIX} deploy.m4/main/50-d-xs.yaml.m4 > deploy/main/50-d-xs.yaml
-
-deploy/main/50-ds-ca.yaml: deploy.m4/main/50-ds-ca.yaml.m4
-	m4 -DDOCKER_PREFIX=${DOCKER_PREFIX} deploy.m4/main/50-ds-ca.yaml.m4 > deploy/main/50-ds-ca.yaml
-
-deploy/main/50-d-kcm.yaml: deploy.m4/main/50-d-kcm.yaml.m4
-	m4 -DDOCKER_PREFIX=${DOCKER_PREFIX} deploy.m4/main/50-d-kcm.yaml.m4 > deploy/main/50-d-kcm.yaml
-
-deploy/main/70-apiservice.yaml: deploy.m4/main/70-apiservice.yaml.m4 ${KOS_PERSIST}/tls/ca.pem.b64
-	m4 -DCA_CRT=$$(cat ${KOS_PERSIST}/tls/ca.pem.b64) \
-		deploy.m4/main/70-apiservice.yaml.m4 > deploy/main/70-apiservice.yaml
 
 %.key:
 	mkdir -p $$(dirname $@)

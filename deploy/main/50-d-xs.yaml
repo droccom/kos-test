@@ -4,7 +4,7 @@ metadata:
   name: network-apiserver
   namespace: example-com
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: network-apiserver
@@ -12,13 +12,21 @@ spec:
     metadata:
       labels:
         app: network-apiserver
+        role.kos.example.com/control: "true"
     spec:
       serviceAccountName: network-apiserver
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - topologyKey: kubernetes.io/hostname
+            labelSelector:
+              matchLabels:
+                role.kos.example.com/control: "true"
       nodeSelector:
         role.kos.example.com/control: "true"
       containers:
       - name: apiserver
-        image: DOCKER_PREFIX/kos-network-apiserver:latest
+        image: mattedocker/kos-network-apiserver:latest
         imagePullPolicy: Always
         volumeMounts:
         - name: network-api-certs

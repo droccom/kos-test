@@ -20,6 +20,8 @@ spec:
       value: http://0.0.0.0:9732
     - name: ETCD_DEBUG
       value: "true"
+    labels:
+      role.kos.example.com/control: "true"
     annotations:
       prometheus.io/scrape: "true"
       prometheus.io/port: "9732"
@@ -27,13 +29,8 @@ spec:
       role.kos.example.com/control: "true"
     affinity:
       podAntiAffinity:
-        preferredDuringSchedulingIgnoredDuringExecution:
-        - weight: 100
-          podAffinityTerm:
-            labelSelector:
-              matchExpressions:
-              - key: etcd_cluster
-                operator: In
-                values:
-                - the-etcd-cluster
-            topologyKey: kubernetes.io/hostname
+        requiredDuringSchedulingIgnoredDuringExecution:
+        - topologyKey: kubernetes.io/hostname
+          labelSelector:
+            matchLabels:
+              role.kos.example.com/control: "true"

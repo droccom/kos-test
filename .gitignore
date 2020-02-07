@@ -1,6 +1,3 @@
-# KOS manifests generated at every deployment
-deploy/main/[57]0-*.yaml
-
 # Binaries for programs and plugins
 *.exe
 *.exe~
