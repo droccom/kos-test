@@ -6,7 +6,7 @@ This repo is about scale-testing of https://github.com/MikeSpreitzer/kube-exampl
 
 ### Independent variables
 
-- OPS: operations per second from driver
+- OPS: average operations per second from driver during cruise phase
 
 - NCA: number of connection agents.  Values: 600, 1200, 1800.
 
