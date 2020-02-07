@@ -1,42 +1,9 @@
 DOCKER_PREFIX=${LOGNAME}
 KOS_PERSIST=${HOME}/.kos
 
-publish:: publish-network-apiserver
-publish:: publish-connection-agent
-publish:: publish-controller-manager
-
-build:: build-network-apiserver
-build:: build-connection-agent
-build:: build-controller-manager
-build:: build-attachment-tput-driver
-
 clean:
-	find images/ ! -name 'Dockerfile' -type f -delete
-	rm -rf local-binaries
 	rm -f deploy/main/[57]0-*
 	rm -rf "${KOS_PERSIST}/tls"
-
-build-network-apiserver:
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o images/network-apiserver/network-apiserver k8s.io/examples/staging/kos/cmd/network-apiserver
-
-build-connection-agent:
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o images/connection-agent/connection-agent k8s.io/examples/staging/kos/cmd/connection-agent
-
-build-controller-manager:
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o images/controller-manager/controller-manager k8s.io/examples/staging/kos/cmd/controller-manager
-
-build-attachment-tput-driver:
-	go build -a -o local-binaries/attachment-tput-driver k8s.io/examples/staging/kos/cmd/attachment-tput-driver
-
-publish-network-apiserver:
-	cd images/network-apiserver && docker build -t ${DOCKER_PREFIX}/kos-network-apiserver:latest . && docker push ${DOCKER_PREFIX}/kos-network-apiserver:latest
-
-publish-connection-agent:
-	cp -R cmd/attachment-tput-driver/test-scripts images/connection-agent
-	cd images/connection-agent && docker build -t ${DOCKER_PREFIX}/kos-connection-agent:latest . && docker push ${DOCKER_PREFIX}/kos-connection-agent:latest
-
-publish-controller-manager:
-	cd images/controller-manager && docker build -t ${DOCKER_PREFIX}/kos-controller-manager:latest . && docker push ${DOCKER_PREFIX}/kos-controller-manager:latest
 
 deploy/main/50-d-xs.yaml: deploy.m4/main/50-d-xs.yaml.m4
 	m4 -DDOCKER_PREFIX=${DOCKER_PREFIX} deploy.m4/main/50-d-xs.yaml.m4 > deploy/main/50-d-xs.yaml
