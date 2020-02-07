@@ -31,12 +31,12 @@ The per-node variables are the following cost metrics.
 We plan on using single-purpose nodes.  We have the following purposes.  We care about the cost metrics from nodes that
 run KOS or Kubernetes components.
 
-- Operations base & run the driver
-- Run centralized logs/metrics services (if we have any of these)
-- Run the KOS connection agent
-- Run the KOS central controllers
-- Run the KOS network-apiserver
-- Run the KOS etcd servers
-- Run the Kubernetes central controllers
-- Run the kube-apiservers
-- Run the kube etcd servers
+- base: Operations base & run the driver
+- obs: Run centralized logs/metrics services (if we have any of these)
+- compNNNN: Run the KOS connection agent
+- nctrlN: Run the KOS central controllers
+- napiN: Run the KOS network-apiserver
+- netcdN: Run the KOS etcd servers
+- kctrlN: Run the Kubernetes central controllers
+- kapiN: Run the kube-apiservers
+- ketcdN: Run the kube etcd servers
