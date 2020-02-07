@@ -28,11 +28,11 @@ The per-node variables are the following cost metrics.
 - network bytes in
 - network bytes out
 
-We plan on using single-purpose nodes.  We have the following purposes.  We care about the cost metrics from nodes that
-run KOS or Kubernetes components.
+We plan on using single-purpose nodes; we care about the per-node cost metrics
+only for the nodes corresponding to certain purposes.
 
-- base: Operations base & run the driver
-- obs: Run centralized logs/metrics services (if we have any of these)
+The purposes for whom we plan to compute the cost metrics are:
+
 - compN: Run the KOS connection agent
 - nctrlN: Run the KOS central controllers
 - napiN: Run the KOS network-apiserver
@@ -40,6 +40,12 @@ run KOS or Kubernetes components.
 - kctrlN: Run the Kubernetes central controllers (including the scheduler)
 - kapiN: Run the kube-apiservers
 - ketcdN: Run the kube etcd servers
+
+The purposes for whom we won't compute the cost metrics are:
+
+- base: Operations base & run the driver
+- obs: Run centralized logs/metrics services (if we have any of these)
+- netcdOp: Run the operator that manages the KOS etcd cluster
 
 ### Development configuration
 
@@ -52,6 +58,7 @@ run KOS or Kubernetes components.
 | kapi    |   1    |   4  |   20   |
 | kctrl   |   1    |   2  |   20   |
 | netcd   |   3    |   4  |   20   |
+| netcdOp |   1    |   2  |   20   |
 | napi    |   1    |   4  |   20   |
 | nctrl   |   1    |   2  |   20   |
-| comp    |   9    |   2  |   20   |
+| comp    |   8    |   2  |   20   |
