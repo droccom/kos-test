@@ -12,4 +12,4 @@ spec:
     protocol: TCP
     targetPort: 443
   selector:
-    app: network-apiserver
+    kos-app: network-apiserver

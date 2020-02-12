@@ -1,6 +1,7 @@
 KOS_PERSIST=${HOME}/.kos-perf-study
 
 clean:
+	rm -f deploy/main/70-*
 	rm -rf "${KOS_PERSIST}/tls"
 
 %.key:
@@ -103,6 +104,10 @@ ${KOS_PERSIST}/tls/network-api/server-secret.yaml: ${KOS_PERSIST}/tls/network-ap
 ${KOS_PERSIST}/tls/network-api/client-secret.yaml:  ${KOS_PERSIST}/tls/ca.pem.b64 tls/network-api/client-secret.yaml.m4
 	m4 -DCA_CRT=$$(cat ${KOS_PERSIST}/tls/ca.pem.b64) \
 		tls/network-api/client-secret.yaml.m4 > ${KOS_PERSIST}/tls/network-api/client-secret.yaml
+
+deploy/main/70-apiservice.yaml: deploy.m4/main/70-apiservice.yaml.m4 ${KOS_PERSIST}/tls/ca.pem.b64
+	m4 -DCA_CRT=$$(cat ${KOS_PERSIST}/tls/ca.pem.b64) \
+		deploy.m4/main/70-apiservice.yaml.m4 > deploy/main/70-apiservice.yaml
 
 .PHONY: deploy
 deploy: deploy/main/50-d-xs.yaml deploy/main/50-ds-ca.yaml deploy/main/50-d-kcm.yaml deploy/main/70-apiservice.yaml ${KOS_PERSIST}/tls/network-api/server-secret.yaml ${KOS_PERSIST}/tls/network-api/client-secret.yaml ${KOS_PERSIST}/tls/etcd/peer-secret.yaml ${KOS_PERSIST}/tls/etcd/server-secret.yaml ${KOS_PERSIST}/tls/etcd/client-secret.yaml
