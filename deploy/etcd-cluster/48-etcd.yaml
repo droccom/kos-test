@@ -21,16 +21,16 @@ spec:
     - name: ETCD_DEBUG
       value: "true"
     labels:
-      role.kos.example.com/control: "true"
+      kos-app: kos-etcd
     annotations:
       prometheus.io/scrape: "true"
       prometheus.io/port: "9732"
     nodeSelector:
-      role.kos.example.com/control: "true"
+      kos-role: kos-etcd
     affinity:
       podAntiAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
         - topologyKey: kubernetes.io/hostname
           labelSelector:
             matchLabels:
-              role.kos.example.com/control: "true"
+              kos-app: kos-etcd

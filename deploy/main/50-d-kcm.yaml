@@ -7,26 +7,18 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: kos-controller-manager
+      kos-app: kos-controller-manager
   template:
     metadata:
       labels:
-        app: kos-controller-manager
-        role.kos.example.com/control: "true"
+        kos-app: kos-controller-manager
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "9295"
     spec:
       serviceAccountName: kos-controller-manager
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - topologyKey: kubernetes.io/hostname
-            labelSelector:
-              matchLabels:
-                role.kos.example.com/control: "true"
       nodeSelector:
-        role.kos.example.com/control: "true"
+        kos-role: kos-controller-manager
       containers:
       - name: kos-controller-manager
         image: mattedocker/kos-controller-manager:latest

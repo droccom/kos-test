@@ -6,18 +6,18 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: connection-agent
+      kos-app: connection-agent
   template:
     metadata:
       labels:
-        app: connection-agent
+        kos-app: connection-agent
       annotations:
         prometheus.io/sample: "true"
         prometheus.io/port: "9294"
     spec:
       serviceAccountName: connection-agent
       nodeSelector:
-        role.kos.example.com/workload: "true"
+        kos-role: connection-agent
       hostNetwork: true
       dnsPolicy: "ClusterFirstWithHostNet"
       containers:

@@ -7,12 +7,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: network-apiserver
+      kos-app: network-apiserver
   template:
     metadata:
       labels:
-        app: network-apiserver
-        role.kos.example.com/control: "true"
+        kos-app: network-apiserver
     spec:
       serviceAccountName: network-apiserver
       affinity:
@@ -21,9 +20,9 @@ spec:
           - topologyKey: kubernetes.io/hostname
             labelSelector:
               matchLabels:
-                role.kos.example.com/control: "true"
+                kos-app: network-apiserver
       nodeSelector:
-        role.kos.example.com/control: "true"
+        kos-role: network-apiserver
       containers:
       - name: apiserver
         image: mattedocker/kos-network-apiserver:latest
