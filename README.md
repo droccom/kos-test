@@ -63,3 +63,51 @@ Thus, L0 memory consumption by L1 disks grows over time according to usage.
 | napi    |   1    |   4  |   12   |
 | nctrl   |   1    |   2  |   12   |
 | comp    |   9    |   2  |    8   |
+
+## Operations
+
+On your management machine let `/etc/ansible/hosts` be a directory
+with various inventory files, writable by you.
+
+### Kubectl configuration
+
+On your laptop, there are two ways to make `kubectl` work without
+explicit server or config arguments.  One is to `ssh
+-L8080:localhost:8080 ...` to a host running a kube-apiserver with the
+insecure port 8080 open.
+
+Another is to
+- copy a secured kubeconfig file to your laptop somewhere,
+- change the server address inside it to `127.0.0.1,
+- `ssh -L6443:localhost:6443 ...` to a host running a kube-apiserver, and
+- set your KUBECONFIG envar to point to the modified kubeconfig file.
+
+### Creating an Ansible inventory file
+
+While logged into your management machine, with this repo's directory
+current, and `kubectl` addressing your cluster:
+
+```
+export clustername=somethingappropriate
+ops/make-inventory.sh $clustername
+```
+
+### Labeling nodes
+
+While logged into your management machine, with this repo's directory
+current, and `kubectl` addressing your cluster:
+
+```
+ops/label-nodes.sh
+```
+
+To display the results:
+```
+kubectl get Node -L kos-role/ketcd,kos-role/kapi,kos-role/kctrl,kos-role/netcd,kos-role/napi,kos-role/nctrl,kos-role/netcd-op,kos-role/comp
+```
+
+### Installing cadvisor on the nodes
+
+```
+ansible-playbook ops/plays/install-cadvisor.yaml -e clustername=$clustername -f 8
+```

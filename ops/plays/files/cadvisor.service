@@ -1,0 +1,15 @@
+[Unit]
+Description=cadvisor
+Documentation=https://github.com/google/cadvisor
+After=network-online.target
+
+[Service]
+User=root
+Type=simple
+ExecStart=/opt/cadvisor --port 4194 --disable_metrics sched,process,tcp,udp,percpu
+
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

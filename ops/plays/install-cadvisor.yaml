@@ -1,0 +1,35 @@
+---
+- hosts: localhost
+  tasks:
+  - name: ensure local copy of cadvisor v0.35.0
+    get_url:
+      mode: a+x
+      checksum: "sha256:e9bb5513d9c49741a6ccf9ec0ce68a0ca5d25d8e75cb426c525b003fbf19cdd9"
+      url: "https://github.com/google/cadvisor/releases/download/v0.35.0/cadvisor"
+      dest: /tmp/cadvisor-v0.35.0
+
+- hosts: "{{ clustername }}"
+  become: true
+  gather_facts: no
+  tasks:
+  - name: ensure /opt exists
+    file:
+      path: /opt
+      state: directory
+
+  - name: ensure cadvisor is in /opt
+    copy:
+      src: /tmp/cadvisor-v0.35.0
+      dest: /opt/cadvisor
+      mode: a+x
+
+  - name: ensure cadvisor is defined in systemd
+    copy:
+      src: cadvisor.service
+      dest: /usr/lib/systemd/system/cadvisor.service
+
+  - name: ensure cadvisor service is running now and runs on boot
+    service:
+      name: cadvisor
+      enabled: true
+      state: started
