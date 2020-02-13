@@ -78,7 +78,7 @@ insecure port 8080 open.
 
 Another is to
 - copy a secured kubeconfig file to your laptop somewhere,
-- change the server address inside it to `127.0.0.1,
+- change the server address inside it to `127.0.0.1`,
 - `ssh -L6443:localhost:6443 ...` to a host running a kube-apiserver, and
 - set your KUBECONFIG envar to point to the modified kubeconfig file.
 
