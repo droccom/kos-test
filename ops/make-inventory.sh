@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if (( $# != 1 )); then
-	echo Usage: %0 clustername >&2
+	echo Usage: $0 clustername >&2
 	exit 1
 fi
 
