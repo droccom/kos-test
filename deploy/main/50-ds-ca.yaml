@@ -17,7 +17,7 @@ spec:
     spec:
       serviceAccountName: connection-agent
       nodeSelector:
-        kos-role: connection-agent
+        kos-role/comp: "true"
       hostNetwork: true
       dnsPolicy: "ClusterFirstWithHostNet"
       containers:

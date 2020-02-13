@@ -20,7 +20,7 @@ spec:
         runAsUser: 1000
         fsGroup: 1000
       nodeSelector:
-        kos-role: kos-etcd-operator
+        kos-role/netcd-op: "true"
       containers:
       - name: etcd-operator
         image: quay.io/coreos/etcd-operator:v0.9.4

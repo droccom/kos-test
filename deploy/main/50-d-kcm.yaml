@@ -18,7 +18,7 @@ spec:
     spec:
       serviceAccountName: kos-controller-manager
       nodeSelector:
-        kos-role: kos-controller-manager
+        kos-role/nctrl: "true"
       containers:
       - name: kos-controller-manager
         image: mattedocker/kos-controller-manager:latest

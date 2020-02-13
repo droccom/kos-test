@@ -26,7 +26,7 @@ spec:
       prometheus.io/scrape: "true"
       prometheus.io/port: "9732"
     nodeSelector:
-      kos-role: kos-etcd
+      kos-role/netcd: "true"
     affinity:
       podAntiAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:

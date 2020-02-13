@@ -22,7 +22,7 @@ spec:
               matchLabels:
                 kos-app: network-apiserver
       nodeSelector:
-        kos-role: network-apiserver
+        kos-role/napi: "true"
       containers:
       - name: apiserver
         image: mattedocker/kos-network-apiserver:latest
