@@ -1,6 +1,7 @@
 #!/bin/bash
 
 kubectl get node --no-headers -o custom-columns=Name:.metadata.name | while read nodename; do
+	kubectl annotate --overwrite Node $nodename prometheus.io/scrape=true
 	if false; then
 		:
 	elif egrep 'ketcd[0-9]$' <<<"$nodename" > /dev/null; then

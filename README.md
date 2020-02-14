@@ -66,6 +66,39 @@ Thus, L0 memory consumption by L1 disks grows over time according to usage.
 | data    |   1    |   2  |   12   |
 | comp    |   8    |   2  |    8   |
 
+## Metrics Configuration
+
+### Prometheus
+
+See `metrics/prometheus`.  It is like the main KOS version, with the
+following differences.
+
+- The `kubernetes-etcd` job discovers nodes from a file based on a
+  configmap rather than from Kubernetes, because the kube etcd servers
+  are not in the kube cluster.  Scraping is _not_ conditional on any
+  node annotation.  The `main-etcd-client-tls` secret is expected to
+  have the keys `ca.pem`, `cert.pem`, and `key.pem`.
+
+- There is an additional job `external-etcd-cadvisor` that scrapes
+  cadvisor on those kube etcd nodes that are not part of the kube
+  cluster.
+
+- The node port for the prometheus server is 8090 instead of 30909.
+
+#### Preparing Prometheus file-based service discovery of external etcd nodes
+
+Define a configmap with a key named `file-sd.yaml` and a value appropriate
+for your cluster.  The value should be a `<file_sd_config>` as defined
+at
+https://prometheus.io/docs/prometheus/latest/configuration/configuration/#file_sd_config
+.
+
+For example:
+
+```
+kubectl create cm prom-file-sd --from-file=file-sd.yaml=ops/prom-file-sd/r12s24-k14-xetcd.yaml
+```
+
 ## Operations
 
 On your management machine let `/etc/ansible/hosts` be a directory
@@ -108,20 +141,6 @@ what is running on those nodes.
 
 ```
 ansible-playbook ops/plays/diff-kctl.yaml -e clustername=$clustername
-```
-
-### Preparing Prometheus file-based service discovery of external etcd nodes
-
-Define a configmap with a key named `file-sd.yaml` and a value appropriate
-for your cluster.  The value should be a `<file_sd_config>` as defined
-at
-https://prometheus.io/docs/prometheus/latest/configuration/configuration/#file_sd_config
-.
-
-For example:
-
-```
-kubectl create cm prom-file-sd --from-file=file-sd.yaml=ops/prom-file-sd/r12s24-k14-xetcd.yaml
 ```
 
 ### Labeling nodes

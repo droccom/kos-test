@@ -15,7 +15,7 @@ spec:
         app: grafana
     spec:
       nodeSelector:
-        role.kos.example.com/base: "true"
+        kos-role/data: "true"
       containers:
       - image: grafana/grafana:5.4.3
         name: grafana
