@@ -112,7 +112,7 @@ ansible-playbook ops/plays/diff-kctl.yaml -e clustername=$clustername
 
 ### Preparing Prometheus file-based service discovery of external etcd nodes
 
-Define a configmap with a key named `file-sd` and a value appropriate
+Define a configmap with a key named `file-sd.yaml` and a value appropriate
 for your cluster.  The value should be a `<file_sd_config>` as defined
 at
 https://prometheus.io/docs/prometheus/latest/configuration/configuration/#file_sd_config
