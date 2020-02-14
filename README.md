@@ -45,6 +45,7 @@ The purposes for whom we won't compute the cost metrics are:
 
 - base: Operations base & run the driver
 - obs: Run centralized logs/metrics services (if we have any of these)
+- data: Run Prometheus server
 
 ### Development configuration
 
@@ -62,7 +63,8 @@ Thus, L0 memory consumption by L1 disks grows over time according to usage.
 | netcd   |   3    |   4  |   12   |
 | napi    |   1    |   4  |   12   |
 | nctrl   |   1    |   2  |   12   |
-| comp    |   9    |   2  |    8   |
+| data    |   1    |   2  |   12   |
+| comp    |   8    |   2  |    8   |
 
 ## Operations
 
@@ -92,6 +94,36 @@ export clustername=somethingappropriate
 ops/make-inventory.sh $clustername
 ```
 
+Since the kubernetes-etcd nodes are not part of the kubernetes
+cluster, an extra step is needed to get them in the ansible inventory.
+Copy the relevant cluster-specific file from `ops/extra-inventory/`
+into your `/etc/ansible/hosts`.
+
+### Differentiating Kubernetes API and Control nodes
+
+The Kubernetes deployment tech deploys all the master components
+(kube-apiserver, kube-scheduler, kube-controller-manager) to both the
+kapi and the kctrl nodes.  The following Ansible playbook usage trims
+what is running on those nodes.
+
+```
+ansible-playbook ops/plays/diff-kctl.yaml -e clustername=$clustername
+```
+
+### Preparing Prometheus file-based service discovery of external etcd nodes
+
+Define a configmap with a key named `file-sd` and a value appropriate
+for your cluster.  The value should be a `<file_sd_config>` as defined
+at
+https://prometheus.io/docs/prometheus/latest/configuration/configuration/#file_sd_config
+.
+
+For example:
+
+```
+kubectl create cm prom-file-sd --from-file=file-sd.yaml=ops/prom-file-sd/r12s24-k14-xetcd.yaml
+```
+
 ### Labeling nodes
 
 While logged into your management machine, with this repo's directory
@@ -103,7 +135,7 @@ ops/label-nodes.sh
 
 To display the results:
 ```
-kubectl get Node -L kos-role/ketcd,kos-role/kapi,kos-role/kctrl,kos-role/netcd,kos-role/napi,kos-role/nctrl,kos-role/netcd-op,kos-role/comp
+kubectl get Node -L kos-role/ketcd,kos-role/kapi,kos-role/kctrl,kos-role/netcd,kos-role/napi,kos-role/nctrl,kos-role/netcd-op,kos-role/comp,kos-role/data
 ```
 
 ### Installing cadvisor on the nodes

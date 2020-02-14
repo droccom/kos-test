@@ -26,6 +26,8 @@ kubectl get Node -o $'jsonpath={range .items[*]}{.status.addresses[?(@.type=="In
 
 	elif egrep 'comp[0-9]+$' <<<"$nodename" > /dev/null; then
 		echo " kos_role_comp=yes"
+	elif egrep 'data[0-9]+$' <<<"$nodename" > /dev/null; then
+		echo " kos_role_data=yes"
 	else
 		echo
 	fi

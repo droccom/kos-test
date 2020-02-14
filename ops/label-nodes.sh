@@ -19,6 +19,8 @@ kubectl get node --no-headers -o custom-columns=Name:.metadata.name | while read
 
 	elif egrep 'comp[0-9]+$' <<<"$nodename" > /dev/null; then
 		kubectl label --overwrite Node $nodename kos-role/comp=true
+	elif egrep 'data[0-9]+$' <<<"$nodename" > /dev/null; then
+		kubectl label --overwrite Node $nodename kos-role/data=true
 	else
 		:
 	fi
