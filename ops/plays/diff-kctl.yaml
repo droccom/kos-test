@@ -1,0 +1,23 @@
+---
+
+- hosts: "{{ clustername }}"
+  become: true
+  gather_facts: no
+  tasks:
+  - name: ensure API node does not run kube-scheduler
+    when: kos_role_kapi|default(False)
+    file:
+      state: absent
+      dest: /etc/kubernetes/manifests/kube-scheduler.yaml
+
+  - name: ensure API node does not run kube-controller-manager
+    when: kos_role_kapi|default(False)
+    file:
+      state: absent
+      dest: /etc/kubernetes/manifests/kube-controller-manager.yaml
+
+  - name: ensure controller node does not run kube-apiserver
+    when: kos_role_kctrl|default(False)
+    file:
+      state: absent
+      dest: /etc/kubernetes/manifests/kube-apiserver.yaml

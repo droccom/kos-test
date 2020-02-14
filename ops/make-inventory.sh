@@ -6,4 +6,27 @@ if (( $# != 1 )); then
 fi
 
 echo "[$1]" > "/etc/ansible/hosts/$1"
-kubectl get Node -o $'jsonpath={range .items[*]}{.status.addresses[?(@.type=="InternalIP")].address} nodename={.metadata.name}\n{end}' >> "/etc/ansible/hosts/$1"
+kubectl get Node -o $'jsonpath={range .items[*]}{.status.addresses[?(@.type=="InternalIP")].address} {.metadata.name}\n{end}' | while read ip nodename rest; do
+	echo -n "$ip" "nodename=$nodename"
+	if false; then
+		:
+	elif egrep 'ketcd[0-9]$' <<<"$nodename" > /dev/null; then
+		echo " kos_role_ketcd=yes"
+	elif egrep 'kapi[0-9]$' <<<"$nodename" > /dev/null; then
+		echo " kos_role_kapi=yes"
+	elif egrep 'kctrl[0-9]$' <<<"$nodename" > /dev/null; then
+		echo " kos_role_kctrl=yes"
+
+	elif egrep 'netcd[0-9]$' <<<"$nodename" > /dev/null; then
+		echo " kos_role_netcd=yes"
+	elif egrep 'napi[0-9]$' <<<"$nodename" > /dev/null; then
+		echo " kos_role_napi=yes"
+	elif egrep 'nctrl[0-9]$' <<<"$nodename" > /dev/null; then
+		echo " kos_role_nctrl=yes kos_role_netcd-op=yes"
+
+	elif egrep 'comp[0-9]+$' <<<"$nodename" > /dev/null; then
+		echo " kos_role_comp=yes"
+	else
+		echo
+	fi
+done >> "/etc/ansible/hosts/$1"
