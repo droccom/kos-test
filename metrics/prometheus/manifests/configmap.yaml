@@ -54,9 +54,12 @@ data:
     #    insecure_skip_verify: true
         ca_file: /etc/main-etcd-client-tls/ca.pem
       file_sd_configs:
-      - files:
-        - "/etc/prom-file-sd/file-sd.yaml"
+      kubernetes_sd_configs:
+        - role: node
       relabel_configs:
+        - source_labels: [__meta_kubernetes_node_annotation_prometheus_io_scrape_etcd]
+          action: keep
+          regex: (true)
         - source_labels: [__address__]
           regex: '(.*):.*'
           replacement: '$1:2379'
@@ -64,18 +67,6 @@ data:
         - target_label: __scheme__
           action: replace
           replacement: 'https'
-    
-    
-    # cadvisor on nodes in /etc/prom-file-sd/file-sd.yaml
-    - job_name: 'external-etcd-cadvisor'
-      file_sd_configs:
-      - files:
-        - "/etc/prom-file-sd/file-sd.yaml"
-      relabel_configs:
-      - source_labels: [__address__]
-        regex: '(.*):.*'
-        replacement: '${1}:4194'
-        target_label: __address__
     
     
     - job_name: 'kubernetes-nodes-cadvisor'
