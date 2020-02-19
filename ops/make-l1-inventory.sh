@@ -5,7 +5,7 @@ if (( $# != 1 )); then
 	exit 1
 fi
 
-echo "[$1]" > "/etc/ansible/hosts/$1"
+echo "[${1}_L1]" > "/etc/ansible/hosts/${1}_L1"
 kubectl get Node -o $'jsonpath={range .items[*]}{.status.addresses[?(@.type=="InternalIP")].address} {.metadata.name}\n{end}' | while read ip nodename rest; do
 	echo -n "$ip" "nodename=$nodename"
 	if false; then
@@ -31,4 +31,4 @@ kubectl get Node -o $'jsonpath={range .items[*]}{.status.addresses[?(@.type=="In
 	else
 		echo
 	fi
-done >> "/etc/ansible/hosts/$1"
+done >> "/etc/ansible/hosts/${1}_L1"

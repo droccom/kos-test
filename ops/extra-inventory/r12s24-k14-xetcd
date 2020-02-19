@@ -1,4 +1,0 @@
-[r12s24-k14]
-10.3.49.98 nodename=r12s24ketcd0 kos_role_ketcd=yes
-10.3.49.99 nodename=r12s24ketcd1 kos_role_ketcd=yes
-10.3.49.100 nodename=r12s24ketcd2 kos_role_ketcd=yes

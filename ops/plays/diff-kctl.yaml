@@ -1,6 +1,6 @@
 ---
 
-- hosts: "{{ clustername }}"
+- hosts: "{{ clustername }}_L1"
   become: true
   gather_facts: no
   tasks:

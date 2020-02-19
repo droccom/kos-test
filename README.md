@@ -49,6 +49,8 @@ The purposes for whom we won't compute the cost metrics are:
 
 ### Development configuration
 
+#### The r12s24 cluster
+
 One L0 host with 64 "CPUs", 512 GB of main memory, and no persistent storage.
 L1 disks are implemented by QCOW2 that is backed by L0 memory.
 Thus, L0 memory consumption by L1 disks grows over time according to usage.
@@ -59,12 +61,12 @@ Thus, L0 memory consumption by L1 disks grows over time according to usage.
 | base    |   1    |   4  |   32   |
 | ketcd   |   3    |   4  |   12   |
 | kapi    |   1    |   4  |   12   |
-| kctrl   |   1    |   2  |   12   |
+| kctrl   |   1    |   4  |   12   |
 | netcd   |   3    |   4  |   12   |
 | napi    |   1    |   4  |   12   |
-| nctrl   |   1    |   2  |   12   |
-| data    |   1    |   2  |   12   |
-| comp    |   8    |   2  |    8   |
+| nctrl   |   1    |   4  |   12   |
+| data    |   1    |   4  |   12   |
+| comp    |   3    |   4  |    8   |
 
 ## Metrics Configuration
 
@@ -73,31 +75,10 @@ Thus, L0 memory consumption by L1 disks grows over time according to usage.
 See `metrics/prometheus`.  It is like the main KOS version, with the
 following differences.
 
-- The `kubernetes-etcd` job discovers nodes from a file based on a
-  configmap rather than from Kubernetes, because the kube etcd servers
-  are not in the kube cluster.  Scraping is _not_ conditional on any
-  node annotation.  The `main-etcd-client-tls` secret is expected to
+- The `main-etcd-client-tls` secret is expected to
   have the keys `ca.pem`, `cert.pem`, and `key.pem`.
 
-- There is an additional job `external-etcd-cadvisor` that scrapes
-  cadvisor on those kube etcd nodes that are not part of the kube
-  cluster.
-
 - The node port for the prometheus server is 8090 instead of 30909.
-
-#### Preparing Prometheus file-based service discovery of external etcd nodes
-
-Define a configmap with a key named `file-sd.yaml` and a value appropriate
-for your cluster.  The value should be a `<file_sd_config>` as defined
-at
-https://prometheus.io/docs/prometheus/latest/configuration/configuration/#file_sd_config
-.
-
-For example:
-
-```
-kubectl create cm prom-file-sd --from-file=file-sd.yaml=ops/prom-file-sd/r12s24-k14-xetcd.yaml
-```
 
 ## Operations
 
@@ -117,20 +98,19 @@ Another is to
 - `ssh -L6443:localhost:6443 ...` to a host running a kube-apiserver, and
 - set your KUBECONFIG envar to point to the modified kubeconfig file.
 
-### Creating an Ansible inventory file
+### Creating an Ansible inventory file for L1 nodes
 
 While logged into your management machine, with this repo's directory
 current, and `kubectl` addressing your cluster:
 
 ```
 export clustername=somethingappropriate
-ops/make-inventory.sh $clustername
+ops/make-l1-inventory.sh $clustername
 ```
 
-Since the kubernetes-etcd nodes are not part of the kubernetes
-cluster, an extra step is needed to get them in the ansible inventory.
-Copy the relevant cluster-specific file from `ops/extra-inventory/`
-into your `/etc/ansible/hosts`.
+This will create a file that is named
+`/etc/ansible/hosts/${clustername}_L1` and defines an Ansible host
+group named `${clustername}_L1`.
 
 ### Differentiating Kubernetes API and Control nodes
 
