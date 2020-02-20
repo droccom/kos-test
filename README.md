@@ -139,6 +139,9 @@ kubectl get Node -L kos-role/ketcd,kos-role/kapi,kos-role/kctrl,kos-role/netcd,k
 
 ### Installing cadvisor on the nodes
 
+(Don't do it this way, cadvisor and OVS should already be installed.)
+
+
 ```
 ansible-playbook ops/plays/install-cadvisor.yaml -e clustername=$clustername -f 8
 ```
