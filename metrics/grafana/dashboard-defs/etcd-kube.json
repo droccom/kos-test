@@ -16,6 +16,7 @@
   "editable": true,
   "gnetId": 3070,
   "graphTooltip": 0,
+  "id": 2,
   "links": [],
   "panels": [
     {
@@ -27,7 +28,7 @@
       "fill": 1,
       "gridPos": {
         "h": 7,
-        "w": 16,
+        "w": 14,
         "x": 0,
         "y": 0
       },
@@ -123,8 +124,8 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 4,
-        "x": 16,
+        "w": 5,
+        "x": 14,
         "y": 0
       },
       "id": 42,
@@ -172,7 +173,7 @@
         }
       ],
       "thresholds": "",
-      "title": "The number of leader changes seen",
+      "title": "Leader changes seen",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -204,8 +205,8 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 4,
-        "x": 20,
+        "w": 5,
+        "x": 19,
         "y": 0
       },
       "id": 43,
@@ -253,7 +254,7 @@
         }
       ],
       "thresholds": "",
-      "title": "The total number of failed proposals seen",
+      "title": "Failed proposals seen",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -1542,7 +1543,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(container_cpu_usage_seconds_total{job=\"external-etcd-cadvisor\",id=\"/\"}[1m])) by (instance)",
+          "expr": "sum(rate(container_cpu_usage_seconds_total{job=\"kubernetes-nodes-cadvisor\",id=\"/system.slice/etcd.service\"}[1m])) by (instance)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{ instance }}",
@@ -1629,14 +1630,14 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum (container_memory_working_set_bytes{job=\"external-etcd-cadvisor\",id=\"/\"}) by (instance)",
+          "expr": "sum (container_memory_working_set_bytes{id=\"/system.slice/etcd.service\",job=\"kubernetes-nodes-cadvisor\"}) by (instance)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Working set {{ instance }}",
           "refId": "A"
         },
         {
-          "expr": "sum (container_memory_usage_bytes{job=\"external-etcd-cadvisor\",id=\"/\"}) by (instance)",
+          "expr": "sum (container_memory_usage_bytes{id=\"/system.slice/etcd.service\",job=\"kubernetes-nodes-cadvisor\"}) by (instance)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Usage {{ instance }}",
@@ -1728,34 +1729,11 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(etcd_network_client_grpc_received_bytes_total{job=\"kubernetes-etcd\"}[1m])) by (instance)",
+          "expr": "(sum(rate(etcd_network_client_grpc_received_bytes_total{job=\"kubernetes-etcd\"}[1m])) by (instance)) + (sum(rate(etcd_network_client_grpc_sent_bytes_total{job=\"kubernetes-etcd\"}[1m])) by (instance)) + (sum(rate(etcd_network_peer_sent_bytes_total{job=\"kubernetes-etcd\"}[1m])) by (instance)) + (sum(rate(etcd_network_peer_received_bytes_total{job=\"kubernetes-etcd\"}[1m])) by (instance))",
           "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "Received (gRPC clients) {{ instance }}",
-          "refId": "A",
-          "step": 30
-        },
-        {
-          "expr": "sum(rate(etcd_network_client_grpc_sent_bytes_total{job=\"kubernetes-etcd\"}[1m])) by (instance)",
-          "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "Transmit (gRPC clients) {{ instance }}",
-          "refId": "B",
-          "step": 30
-        },
-        {
-          "expr": "sum(rate(container_network_receive_bytes_total{job=\"external-etcd-cadvisor\",id=\"/\"}[1m])) by (instance)",
-          "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "Receive (cAdvisor) {{ instance }}",
-          "refId": "C"
-        },
-        {
-          "expr": "sum(rate(container_network_transmit_bytes_total{job=\"external-etcd-cadvisor\",id=\"/\"}[1m])) by (instance)",
-          "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "Transmit (cAdvisor) {{ instance }}",
-          "refId": "D"
+          "intervalFactor": 1,
+          "legendFormat": "{{ instance }}",
+          "refId": "A"
         }
       ],
       "thresholds": [],
@@ -1932,17 +1910,17 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(container_fs_writes_bytes_total{job=\"external-etcd-cadvisor\",device=\"/dev/vda\",id=\"/\"}[1m])) by (instance)",
+          "expr": "sum(rate(container_fs_writes_bytes_total{device=\"/dev/vda\",id=\"/system.slice/etcd.service\",job=\"kubernetes-nodes-cadvisor\"}[1m])) by (instance)",
           "format": "time_series",
           "intervalFactor": 2,
-          "legendFormat": "Writes {{ instance }}",
+          "legendFormat": "Write {{ instance }}",
           "refId": "A"
         },
         {
-          "expr": "sum(rate(container_fs_reads_bytes_total{cjob=\"external-etcd-cadvisor\",device=\"/dev/vda\",id=\"/\"}[1m])) by (instance)",
+          "expr": "sum(rate(container_fs_reads_bytes_total{device=\"/dev/vda\",id=\"/system.slice/etcd.service\",job=\"kubernetes-nodes-cadvisor\"}[1m])) by (instance)",
           "format": "time_series",
           "intervalFactor": 2,
-          "legendFormat": "Reads {{ instance }}",
+          "legendFormat": "Read {{ instance }}",
           "refId": "B"
         }
       ],
@@ -1950,7 +1928,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "/dev/vda write rate",
+      "title": "/dev/vda I/O rate",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -2113,5 +2091,5 @@
   "timezone": "utc",
   "title": "Kubernetes Etcd by Prometheus",
   "uid": "VxD-2WXiz",
-  "version": 1
+  "version": 2
 }
