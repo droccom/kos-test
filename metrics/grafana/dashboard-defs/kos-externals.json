@@ -417,7 +417,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "histogram_quantile(0.99, rate(kos_agent_attachment_exec_duration_secs_bucket{what=\"postCreateExec\"}[1m]))",
+          "expr": "histogram_quantile(0.99, rate(kos_agent_attachment_exec_duration_secs_bucket{what=\"postCreate\"}[1m]))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{ node }}",
@@ -502,7 +502,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(kos_agent_attachment_exec_duration_secs_sum{what=\"postCreateExec\"}[1m])/rate(kos_agent_attachment_exec_duration_secs_count{what=\"postCreateExec\"}[1m])",
+          "expr": "rate(kos_agent_attachment_exec_duration_secs_sum{what=\"postCreate\"}[1m])/rate(kos_agent_attachment_exec_duration_secs_count{what=\"postCreate\"}[1m])",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{ node }}",
@@ -587,7 +587,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(kos_agent_attachment_exec_status_count{what=\"postCreateExec\"}[1m])",
+          "expr": "rate(kos_agent_attachment_exec_status_count{what=\"postCreate\"}[1m])",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{ node }} {{ exitStatus }}",
