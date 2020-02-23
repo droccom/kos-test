@@ -2279,7 +2279,7 @@ data:
           "fill": 1,
           "gridPos": {
             "h": 7,
-            "w": 16,
+            "w": 14,
             "x": 0,
             "y": 0
           },
@@ -2375,8 +2375,8 @@ data:
           },
           "gridPos": {
             "h": 7,
-            "w": 4,
-            "x": 16,
+            "w": 5,
+            "x": 14,
             "y": 0
           },
           "id": 42,
@@ -2424,7 +2424,7 @@ data:
             }
           ],
           "thresholds": "",
-          "title": "The number of leader changes seen",
+          "title": "Leader changes seen",
           "type": "singlestat",
           "valueFontSize": "80%",
           "valueMaps": [
@@ -2456,8 +2456,8 @@ data:
           },
           "gridPos": {
             "h": 7,
-            "w": 4,
-            "x": 20,
+            "w": 5,
+            "x": 19,
             "y": 0
           },
           "id": 43,
@@ -2505,7 +2505,7 @@ data:
             }
           ],
           "thresholds": "",
-          "title": "The total number of failed proposals seen",
+          "title": "Failed proposals seen",
           "type": "singlestat",
           "valueFontSize": "80%",
           "valueMaps": [
@@ -2945,10 +2945,10 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "process_resident_memory_bytes{job!=\"kubernetes-etcd\"}",
+              "expr": "round(histogram_quantile(0.99, sum(rate(etcd_network_peer_round_trip_time_seconds_bucket{job!=\"kubernetes-etcd\"}[5m])) by (instance, le)), 0.00001)",
               "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "{{instance}} Resident Memory",
+              "legendFormat": "from {{instance}}",
               "metric": "process_resident_memory_bytes",
               "refId": "A",
               "step": 120
@@ -2958,7 +2958,7 @@ data:
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "Memory",
+          "title": "Network RTT",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -2975,7 +2975,7 @@ data:
           },
           "yaxes": [
             {
-              "format": "bytes",
+              "format": "s",
               "label": null,
               "logBase": 1,
               "max": null,
@@ -3881,6 +3881,13 @@ data:
               "intervalFactor": 2,
               "legendFormat": "Usage @ {{ instance }}",
               "refId": "B"
+            },
+            {
+              "expr": "process_resident_memory_bytes{kos_app=\"kos-etcd\"}",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "proc res mem @ {{ node_name }}",
+              "refId": "C"
             }
           ],
           "thresholds": [],
@@ -4347,7 +4354,7 @@ data:
       "timezone": "utc",
       "title": "Non-Kubernetes Etcd by Prometheus",
       "uid": "jsBg9ywiz",
-      "version": 1
+      "version": 2
     }
   kos-externals.json: |
     {
