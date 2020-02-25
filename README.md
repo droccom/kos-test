@@ -78,8 +78,6 @@ following differences.
 - The `main-etcd-client-tls` secret is expected to
   have the keys `ca.pem`, `cert.pem`, and `key.pem`.
 
-- The node port for the prometheus server is 8090 instead of 30909.
-
 ## Operations
 
 On your management machine let `/etc/ansible/hosts` be a directory
