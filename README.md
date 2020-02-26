@@ -143,3 +143,21 @@ kubectl get Node -L kos-role/ketcd,kos-role/kapi,kos-role/kctrl,kos-role/netcd,k
 ```
 ansible-playbook ops/plays/install-cadvisor.yaml -e clustername=$clustername -f 8
 ```
+
+## Data storage
+
+Data will be stored in an IBM Cloud Object Storage (COS) instance.
+
+We will use the Minio client, as described at
+https://cloud.ibm.com/docs/services/cloud-object-storage?topic=cloud-object-storage-minio
+.  The binary is at https://dl.min.io/client/mc/release/linux-amd64/mc
+; its SHA256 hash is
+2b679947158d54fb487e816807c1d01075c33dc865c15ee74fc80df79f680bab.
+
+The clusters come with `mc` installed and configured with a target
+named `kostest` that refers to the above COS instance.
+
+For each experiment there is a short ID.  We make a bucket having that
+ID as its name.  At the end of each experiment, each node creates a
+ZIP archive of all the node's data to save and stores that archive in
+that bucket.
