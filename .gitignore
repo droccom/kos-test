@@ -15,4 +15,4 @@
 # vendor/
 
 # The generated manifests
-deploy/main/70-*.yaml
+deploy/main/[57]0-*.yaml
