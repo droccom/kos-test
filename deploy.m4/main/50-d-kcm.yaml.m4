@@ -21,7 +21,7 @@ spec:
         kos-role/nctrl: "true"
       containers:
       - name: kos-controller-manager
-        image: mspreitz/kos-controller-manager:6266b6f4933189482780f6e8625facffeeaba117
+        image: DOCKER_PREFIX/kos-controller-manager:DOCKER_TAG
         imagePullPolicy: Always
 # Uncomment the following lines if --indirect-requests is set to false
         # volumeMounts:
