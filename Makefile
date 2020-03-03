@@ -1,3 +1,5 @@
+DOCKER_PREFIX=mspreitz
+DOCKER_TAG=6266b6f4933189482780f6e8625facffeeaba117
 KOS_PERSIST=${HOME}/.kos-perf-study
 
 clean:
@@ -104,6 +106,15 @@ ${KOS_PERSIST}/tls/network-api/server-secret.yaml: ${KOS_PERSIST}/tls/network-ap
 ${KOS_PERSIST}/tls/network-api/client-secret.yaml:  ${KOS_PERSIST}/tls/ca.pem.b64 tls/network-api/client-secret.yaml.m4
 	m4 -DCA_CRT=$$(cat ${KOS_PERSIST}/tls/ca.pem.b64) \
 		tls/network-api/client-secret.yaml.m4 > ${KOS_PERSIST}/tls/network-api/client-secret.yaml
+
+deploy/main/50-d-xs.yaml: deploy.m4/main/50-d-xs.yaml.m4
+	m4 -DDOCKER_PREFIX=${DOCKER_PREFIX} -DDOCKER_TAG=${DOCKER_TAG} deploy.m4/main/50-d-xs.yaml.m4 > deploy/main/50-d-xs.yaml
+
+deploy/main/50-ds-ca.yaml: deploy.m4/main/50-ds-ca.yaml.m4
+	m4 -DDOCKER_PREFIX=${DOCKER_PREFIX} -DDOCKER_TAG=${DOCKER_TAG} deploy.m4/main/50-ds-ca.yaml.m4 > deploy/main/50-ds-ca.yaml
+
+deploy/main/50-d-kcm.yaml: deploy.m4/main/50-d-kcm.yaml.m4
+	m4 -DDOCKER_PREFIX=${DOCKER_PREFIX} -DDOCKER_TAG=${DOCKER_TAG} deploy.m4/main/50-d-kcm.yaml.m4 > deploy/main/50-d-kcm.yaml
 
 deploy/main/70-apiservice.yaml: deploy.m4/main/70-apiservice.yaml.m4 ${KOS_PERSIST}/tls/ca.pem.b64
 	m4 -DCA_CRT=$$(cat ${KOS_PERSIST}/tls/ca.pem.b64) \

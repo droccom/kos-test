@@ -21,7 +21,7 @@ spec:
         kos-role/nctrl: "true"
       containers:
       - name: kos-controller-manager
-        image: mattedocker/kos-controller-manager:latest
+        image: DOCKER_PREFIX/kos-controller-manager:DOCKER_TAG
         imagePullPolicy: Always
 # Uncomment the following lines if --indirect-requests is set to false
         # volumeMounts:

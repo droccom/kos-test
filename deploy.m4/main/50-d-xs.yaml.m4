@@ -25,7 +25,7 @@ spec:
         kos-role/napi: "true"
       containers:
       - name: apiserver
-        image: mattedocker/kos-network-apiserver:latest
+        image: DOCKER_PREFIX/kos-network-apiserver:DOCKER_TAG
         imagePullPolicy: Always
         volumeMounts:
         - name: network-api-certs
