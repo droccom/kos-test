@@ -5065,7 +5065,7 @@ data:
           "fill": 1,
           "gridPos": {
             "h": 10,
-            "w": 12,
+            "w": 8,
             "x": 0,
             "y": 0
           },
@@ -5166,8 +5166,8 @@ data:
           "fill": 1,
           "gridPos": {
             "h": 10,
-            "w": 12,
-            "x": 12,
+            "w": 8,
+            "x": 8,
             "y": 0
           },
           "id": 21,
@@ -5206,6 +5206,105 @@ data:
           "timeRegions": [],
           "timeShift": null,
           "title": "Number of CA, By Fabric Name",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "prometheus",
+          "fill": 1,
+          "gridPos": {
+            "h": 10,
+            "w": 8,
+            "x": 16,
+            "y": 0
+          },
+          "id": 57,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "kos_agent_version",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "ca {{ git_commit }} @ {{ instance }}",
+              "refId": "A"
+            },
+            {
+              "expr": "kos_ipam_version",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "ip {{ git_commit }} @ {{ instance }}",
+              "refId": "B"
+            },
+            {
+              "expr": "kos_subnet_validator_version",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "sv {{ git_commit }} @ {{ instance }}",
+              "refId": "C"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "KOS git commit",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -7859,7 +7958,7 @@ data:
       "timezone": "",
       "title": "KOS Internals",
       "uid": "39Dk0_Qik",
-      "version": 1
+      "version": 2
     }
   kubernetes-apiservers.json: |
     {
