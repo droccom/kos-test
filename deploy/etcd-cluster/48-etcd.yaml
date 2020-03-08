@@ -5,7 +5,7 @@ metadata:
   namespace: example-com
 spec:
   size: 3
-  version: "3.3.11"
+  version: "3.4.4"
   TLS:
     static:
       member:
