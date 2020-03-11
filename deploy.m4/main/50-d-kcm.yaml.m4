@@ -42,7 +42,7 @@ spec:
         - --indirect-requests=true
 # Uncomment the following line if --indirect-requests is set to false
 #        - --network-api-ca=/network-api/ca.crt
-        - --ipam-workers=2
+        - --ipam-workers=6
         - --subnet-validator-workers=2
 # Uncomment the following lines if --indirect-requests is set to false
       # volumes:
