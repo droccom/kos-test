@@ -130,7 +130,7 @@ deploy-etcd: ${KOS_PERSIST}/tls/etcd/peer-secret.yaml ${KOS_PERSIST}/tls/etcd/se
 	kubectl apply -f deploy/etcd-operator && \
 	while ! kubectl get EtcdCluster ; do sleep 5 ; done && \
 	kubectl apply -f deploy/etcd-cluster && \
-	while [[ "$(kubectl get EtcdCluster -n example-com   the-etcd-cluster -o 'jsonpath={.status.conditions[?(@.type=="Available")].status}')" != True ]]; do date; sleep 30; done
+	while [ "$$(kubectl get EtcdCluster -n example-com   the-etcd-cluster -o 'jsonpath={.status.conditions[?(@.type=="Available")].status}')" != True ]; do kubectl get Pod -n example-com -l etcd_cluster=the-etcd-cluster -o wide; date; echo; sleep 30; done
 
 .PHONY: deploy
 deploy: deploy/main/50-d-xs.yaml deploy/main/50-ds-ca.yaml deploy/main/50-d-kcm.yaml deploy/main/70-apiservice.yaml ${KOS_PERSIST}/tls/network-api/server-secret.yaml ${KOS_PERSIST}/tls/network-api/client-secret.yaml deploy-etcd
