@@ -120,8 +120,8 @@ deploy/main/70-apiservice.yaml: deploy.m4/main/70-apiservice.yaml.m4 ${KOS_PERSI
 	m4 -DCA_CRT=$$(cat ${KOS_PERSIST}/tls/ca.pem.b64) \
 		deploy.m4/main/70-apiservice.yaml.m4 > deploy/main/70-apiservice.yaml
 
-.PHONY: deploy
-deploy: deploy/main/50-d-xs.yaml deploy/main/50-ds-ca.yaml deploy/main/50-d-kcm.yaml deploy/main/70-apiservice.yaml ${KOS_PERSIST}/tls/network-api/server-secret.yaml ${KOS_PERSIST}/tls/network-api/client-secret.yaml ${KOS_PERSIST}/tls/etcd/peer-secret.yaml ${KOS_PERSIST}/tls/etcd/server-secret.yaml ${KOS_PERSIST}/tls/etcd/client-secret.yaml
+.PHONY: deploy-etcd
+deploy-etcd: ${KOS_PERSIST}/tls/etcd/peer-secret.yaml ${KOS_PERSIST}/tls/etcd/server-secret.yaml ${KOS_PERSIST}/tls/etcd/client-secret.yaml
 	kubectl apply -f deploy/ns && \
 	kubectl apply -f deploy/etcd-operator-rbac && \
 	kubectl apply -f ${KOS_PERSIST}/tls/etcd/peer-secret.yaml && \
@@ -130,6 +130,10 @@ deploy: deploy/main/50-d-xs.yaml deploy/main/50-ds-ca.yaml deploy/main/50-d-kcm.
 	kubectl apply -f deploy/etcd-operator && \
 	while ! kubectl get EtcdCluster ; do sleep 5 ; done && \
 	kubectl apply -f deploy/etcd-cluster && \
+	while [[ "$(kubectl get EtcdCluster -n example-com   the-etcd-cluster -o 'jsonpath={.status.conditions[?(@.type=="Available")].status}')" != True ]]; do date; sleep 30; done
+
+.PHONY: deploy
+deploy: deploy/main/50-d-xs.yaml deploy/main/50-ds-ca.yaml deploy/main/50-d-kcm.yaml deploy/main/70-apiservice.yaml ${KOS_PERSIST}/tls/network-api/server-secret.yaml ${KOS_PERSIST}/tls/network-api/client-secret.yaml deploy-etcd
 	kubectl apply -f ${KOS_PERSIST}/tls/network-api/server-secret.yaml && \
 	kubectl apply -f ${KOS_PERSIST}/tls/network-api/client-secret.yaml && \
 	kubectl apply -f deploy/main
