@@ -3,7 +3,7 @@ DOCKER_TAG=8525d220315dcafb26b273a9201d9e68eb3ef64c
 KOS_PERSIST=${HOME}/.kos-perf-study
 
 clean:
-	rm -f deploy/main/70-*
+	rm -f deploy/main/[57]0-*
 	rm -rf "${KOS_PERSIST}/tls"
 
 %.key:
