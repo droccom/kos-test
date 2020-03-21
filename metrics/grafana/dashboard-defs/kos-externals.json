@@ -420,7 +420,7 @@
           "expr": "histogram_quantile(0.99, rate(kos_agent_attachment_exec_duration_secs_bucket{what=\"postCreate\"}[1m]))",
           "format": "time_series",
           "intervalFactor": 2,
-          "legendFormat": "{{ node }}",
+          "legendFormat": "{{ node }} {{ lgComplaints }}",
           "refId": "A"
         }
       ],
@@ -505,7 +505,7 @@
           "expr": "rate(kos_agent_attachment_exec_duration_secs_sum{what=\"postCreate\"}[1m])/rate(kos_agent_attachment_exec_duration_secs_count{what=\"postCreate\"}[1m])",
           "format": "time_series",
           "intervalFactor": 2,
-          "legendFormat": "{{ node }}",
+          "legendFormat": "{{ node }} {{ lgComplaints }}",
           "refId": "A"
         }
       ],
@@ -590,7 +590,7 @@
           "expr": "rate(kos_agent_attachment_exec_status_count{what=\"postCreate\"}[1m])",
           "format": "time_series",
           "intervalFactor": 2,
-          "legendFormat": "{{ node }} {{ exitStatus }}",
+          "legendFormat": "{{ node }} {{ exitStatus }} {{ lgComplaints }}",
           "refId": "A"
         }
       ],
