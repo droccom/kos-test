@@ -1,6 +1,7 @@
 DOCKER_PREFIX=mspreitz
 DOCKER_TAG=01cd6de7d18b6157b241888ba98d2ced22bce2a2
 KOS_PERSIST=${HOME}/.kos-perf-study
+SMALL=false
 
 clean:
 	rm -f deploy/main/[57]0-*
@@ -111,7 +112,7 @@ deploy/main/50-d-xs.yaml: deploy.m4/main/50-d-xs.yaml.m4
 	m4 -DDOCKER_PREFIX=${DOCKER_PREFIX} -DDOCKER_TAG=${DOCKER_TAG} deploy.m4/main/50-d-xs.yaml.m4 > deploy/main/50-d-xs.yaml
 
 deploy/main/50-ds-ca.yaml: deploy.m4/main/50-ds-ca.yaml.m4
-	m4 -DDOCKER_PREFIX=${DOCKER_PREFIX} -DDOCKER_TAG=${DOCKER_TAG} deploy.m4/main/50-ds-ca.yaml.m4 > deploy/main/50-ds-ca.yaml
+	m4 -DDOCKER_PREFIX=${DOCKER_PREFIX} -DDOCKER_TAG=${DOCKER_TAG} -DSMALL=${SMALL} deploy.m4/main/50-ds-ca.yaml.m4 > deploy/main/50-ds-ca.yaml
 
 deploy/main/50-d-kcm.yaml: deploy.m4/main/50-d-kcm.yaml.m4
 	m4 -DDOCKER_PREFIX=${DOCKER_PREFIX} -DDOCKER_TAG=${DOCKER_TAG} deploy.m4/main/50-d-kcm.yaml.m4 > deploy/main/50-d-kcm.yaml

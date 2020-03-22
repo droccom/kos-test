@@ -12,7 +12,7 @@ spec:
       labels:
         kos-app: connection-agent
       annotations:
-        prometheus.io/sample: "true"
+        prometheus.io/ifelse(SMALL,true,scrape,sample): "true"
         prometheus.io/port: "9294"
     spec:
       serviceAccountName: connection-agent
