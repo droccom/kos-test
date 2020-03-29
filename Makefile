@@ -3,9 +3,11 @@ DOCKER_TAG=bcbae82a81b5e19a3f9251c672a3fc5267ea8872
 KOS_PERSIST=${HOME}/.kos-perf-study
 SMALL=false
 
-clean:
-	rm -f deploy/main/[57]0-*
+clean: noinst
 	rm -rf "${KOS_PERSIST}/tls"
+
+noinst:
+	rm -f deploy/main/[57]0-*
 
 %.key:
 	mkdir -p $$(dirname $@)
