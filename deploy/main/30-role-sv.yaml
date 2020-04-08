@@ -16,11 +16,9 @@ rules:
   - subnets/status
   verbs:
   - update
-  - patch
 - apiGroups:
   - ""
   resources:
   - events
   verbs:
   - create
-  - patch

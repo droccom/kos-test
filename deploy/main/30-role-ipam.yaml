@@ -17,18 +17,20 @@ rules:
   resources:
   - networkattachments/status
   verbs:
-  - update
   - patch
 - apiGroups:
   - network.example.com
   resources:
   - iplocks
   verbs:
-  - "*"
+  - create
+  - get
+  - list
+  - watch
+  - delete
 - apiGroups:
   - ""
   resources:
   - events
   verbs:
   - create
-  - patch
