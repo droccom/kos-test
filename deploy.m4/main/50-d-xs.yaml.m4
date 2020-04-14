@@ -39,9 +39,6 @@ spec:
         - --tls-cert-file=/network-api-certs/server-and-ca.crt
         - --tls-private-key-file=/network-api-certs/server.key
         - --etcd-servers=https://the-etcd-cluster-client:2379
-        - --etcd-certfile=/etcd-certs/etcd-client.crt
-        - --etcd-keyfile=/etcd-certs/etcd-client.key
-        - --etcd-cafile=/etcd-certs/etcd-client-ca.crt
         - --default-watch-cache-size=1000
         - -v=5
       volumes:

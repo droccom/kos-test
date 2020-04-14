@@ -5,13 +5,8 @@ metadata:
   namespace: example-com
 spec:
   size: 3
-  version: "3.4.4"
-  TLS:
-    static:
-      member:
-        peerSecret: etcd-peer
-        serverSecret: etcd-server
-      operatorSecret: etcd-client
+  repository: mspreitz/etcd
+  version: "e5f2e9e6d98f5dbd2be2c5b2f7ea74bc2dbec76f"
   pod:
     etcdEnv:
     - name: ETCD_METRICS
