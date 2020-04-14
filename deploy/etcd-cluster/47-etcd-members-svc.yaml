@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kos-etcd-members
+  namespace: example-com
+  labels:
+    kos-app: kos-etcd
+spec:
+  ports:
+  - port: 2380
+    name: peer
+  clusterIP: None
+  selector:
+    kos-app: kos-etcd

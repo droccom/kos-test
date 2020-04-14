@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: the-etcd-cluster
+  namespace: example-com
+spec:
+  selector:
+    matchLabels:
+      kos-app: kos-etcd
+  serviceName: kos-etcd-members
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        kos-app: kos-etcd
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "2379"
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: server
+        image: quay.io/coreos/etcd:v2.3.8
+        command:
+        - /etcd
+        - --debug=true
+        - --name=$(MY_POD_NAME)
+        - --data-dir=/data
+        - --listen-peer-urls=http://0.0.0.0:2380
+        - --listen-client-urls=http://0.0.0.0:2379
+        - --initial-advertise-peer-urls=http://$(MY_POD_IP):2380
+        - --advertise-client-urls=http://$(MY_POD_IP):2379
+        - --initial-cluster=the-etcd-cluster-0=http://the-etcd-cluster-0.kos-etcd-members.example-com.svc.cluster.local:2380,the-etcd-cluster-1=http://the-etcd-cluster-1.kos-etcd-members.example-com.svc.cluster.local:2380,the-etcd-cluster-2=http://the-etcd-cluster-2.kos-etcd-members.example-com.svc.cluster.local:2380
+        env:
+        - name: MY_POD_NAME
+          valueFrom: {fieldRef: {fieldPath: metadata.name} }
+        - name: MY_POD_IP
+          valueFrom: {fieldRef: {fieldPath: status.podIP} }
+        ports:
+        - name: client
+          containerPort: 2379
+        - name: peer
+          containerPort: 2380
+        volumeMounts:
+        - mountPath: /data
+          name: etcdstorage
+      volumes:
+      - name: etcdstorage
+        emptyDir: {}
