@@ -618,7 +618,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Disk Sync Duration",
+      "title": "99th %ile Disk Sync Duration",
       "tooltip": {
         "msResolution": false,
         "shared": true,
@@ -693,10 +693,10 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "round(histogram_quantile(0.99, sum(rate(etcd_network_peer_round_trip_time_seconds_bucket{job!=\"kubernetes-etcd\"}[5m])) by (instance, le)), 0.00001)",
+          "expr": "round(histogram_quantile(0.9, sum(rate(etcd_network_peer_round_trip_time_seconds_bucket{job!=\"kubernetes-etcd\"}[5m])) by (instance, le, To)), 0.00001)",
           "format": "time_series",
-          "intervalFactor": 2,
-          "legendFormat": "from {{instance}}",
+          "intervalFactor": 1,
+          "legendFormat": "from {{instance}} to {{ To }}",
           "metric": "process_resident_memory_bytes",
           "refId": "A",
           "step": 120
@@ -706,7 +706,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Network RTT",
+      "title": "90th %ile Network RTT",
       "tooltip": {
         "msResolution": false,
         "shared": true,
@@ -2102,5 +2102,5 @@
   "timezone": "utc",
   "title": "Non-Kubernetes Etcd by Prometheus",
   "uid": "jsBg9ywiz",
-  "version": 2
+  "version": 1
 }

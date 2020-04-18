@@ -172,7 +172,6 @@ data:
       "editable": true,
       "gnetId": 3070,
       "graphTooltip": 0,
-      "id": 2,
       "links": [],
       "panels": [
         {
@@ -775,7 +774,7 @@ data:
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "Disk Sync Duration",
+          "title": "99th %ile Disk Sync Duration",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -850,10 +849,10 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "round(histogram_quantile(0.99, sum(rate(etcd_network_peer_round_trip_time_seconds_bucket{job=\"kubernetes-etcd\"}[5m])) by (instance, le)), 0.00001)",
+              "expr": "round(histogram_quantile(0.9, sum(rate(etcd_network_peer_round_trip_time_seconds_bucket{job=\"kubernetes-etcd\"}[5m])) by (instance, le, To)), 0.00001)",
               "format": "time_series",
-              "intervalFactor": 2,
-              "legendFormat": "from {{instance}}",
+              "intervalFactor": 1,
+              "legendFormat": "from {{instance}} to {{ To }}",
               "metric": "process_resident_memory_bytes",
               "refId": "A",
               "step": 120
@@ -863,7 +862,7 @@ data:
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "net RTT",
+          "title": "90th %ile net RTT",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -2247,7 +2246,7 @@ data:
       "timezone": "utc",
       "title": "Kubernetes Etcd by Prometheus",
       "uid": "VxD-2WXiz",
-      "version": 2
+      "version": 1
     }
   etcd-non-kube.json: |
     {
@@ -2870,7 +2869,7 @@ data:
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "Disk Sync Duration",
+          "title": "99th %ile Disk Sync Duration",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -2945,10 +2944,10 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "round(histogram_quantile(0.99, sum(rate(etcd_network_peer_round_trip_time_seconds_bucket{job!=\"kubernetes-etcd\"}[5m])) by (instance, le)), 0.00001)",
+              "expr": "round(histogram_quantile(0.9, sum(rate(etcd_network_peer_round_trip_time_seconds_bucket{job!=\"kubernetes-etcd\"}[5m])) by (instance, le, To)), 0.00001)",
               "format": "time_series",
-              "intervalFactor": 2,
-              "legendFormat": "from {{instance}}",
+              "intervalFactor": 1,
+              "legendFormat": "from {{instance}} to {{ To }}",
               "metric": "process_resident_memory_bytes",
               "refId": "A",
               "step": 120
@@ -2958,7 +2957,7 @@ data:
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "Network RTT",
+          "title": "90th %ile Network RTT",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -4354,7 +4353,7 @@ data:
       "timezone": "utc",
       "title": "Non-Kubernetes Etcd by Prometheus",
       "uid": "jsBg9ywiz",
-      "version": 2
+      "version": 1
     }
   kos-externals.json: |
     {
