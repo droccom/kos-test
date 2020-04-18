@@ -47,6 +47,7 @@ spec:
         command:
         - /connection-agent
         - -v=5
+        - -workers=3
         - -nodename=$(NODE_NAME)
         - -hostip=$(HOST_IP)
         - -allowed-programs=/usr/local/kos/bin/TestByPing,/usr/local/kos/bin/RemoveNetNS
