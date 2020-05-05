@@ -154,17 +154,18 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "histogram_quantile(0.99, rate(kos_ipam_attachment_create_to_address_latency_seconds_bucket[1m]))",
+          "expr": "histogram_quantile(0.99, rate(kos_ipam_attachment_create_to_status_update_latency_seconds_bucket[1m]))",
           "format": "time_series",
+          "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "99%ile address",
+          "legendFormat": "address waitedForIPAM={{ waited_for_ipam }} statusErr={{ statusErr }}",
           "refId": "A"
         },
         {
           "expr": "histogram_quantile(0.99, rate(kos_ipam_attachment_create_to_lock_latency_seconds_bucket[1m]))",
           "format": "time_series",
           "intervalFactor": 2,
-          "legendFormat": "99%ile lock",
+          "legendFormat": "lock waitedForIPAM={{ waited_for_ipam }}",
           "refId": "B"
         }
       ],
@@ -172,7 +173,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Address Controller Latency secs",
+      "title": "99%ile Address Controller Latency secs",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -246,7 +247,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "histogram_quantile(0.99, rate(kos_agent_attachment_create_to_local_ifc_latency_seconds_bucket[1m]))",
+          "expr": "histogram_quantile(0.99, rate(kos_agent_attachment_create_to_local_ifc_latency_seconds_bucket{waited_for_ipam=\"false\", waited_for_local_ca=\"false\"}[1m]))",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -258,7 +259,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "99th Percentile Create-To-Local-Interface Latency secs",
+      "title": "99%ile Create-To-Local-Interface Latency secs, no wait for Controllers",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -308,7 +309,7 @@
         "x": 0,
         "y": 22
       },
-      "id": 4,
+      "id": 12,
       "legend": {
         "avg": false,
         "current": false,
@@ -332,18 +333,26 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "histogram_quantile(0.99, rate(kos_agent_attachment_create_to_status_latency_seconds_bucket[1m]))",
+          "expr": "histogram_quantile(0.99, rate(kos_agent_attachment_create_to_local_ifc_latency_seconds_bucket{waited_for_ipam=\"true\"}[1m]))",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "{{ node }} waitedForIPAM={{ waited_for_ipam }} waitedForCA={{ waited_for_local_ca }}",
+          "refId": "A"
+        },
+        {
+          "expr": "histogram_quantile(0.99, rate(kos_agent_attachment_create_to_local_ifc_latency_seconds_bucket{waited_for_ipam=\"false\", waited_for_local_ca=\"true\"}[1m]))",
           "format": "time_series",
           "intervalFactor": 2,
-          "legendFormat": "{{ node }}",
-          "refId": "A"
+          "legendFormat": "{{ node }} waitedForIPAM={{ waited_for_ipam }} waitedForCA={{ waited_for_local_ca }}",
+          "refId": "B"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "99th Percentile Attachment Create-to-Ready Latency secs",
+      "title": "99%ile Create-To-Local-Interface Latency secs, wait for Controllers",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -392,6 +401,636 @@
         "w": 24,
         "x": 0,
         "y": 29
+      },
+      "id": 4,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.99, rate(kos_agent_attachment_create_to_status_latency_seconds_bucket{waited_for_ipam=\"false\", waited_for_local_ca=\"false\"}[1m]))",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{ node }}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "99%ile Attachment Create-to-Ready Latency secs, no wait for Controllers",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "prometheus",
+      "fill": 1,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 36
+      },
+      "id": 13,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.99, rate(kos_agent_attachment_create_to_status_latency_seconds_bucket{waited_for_ipam=\"true\"}[1m]))",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{ node }} waitedForIPAM={{ waited_for_ipam }} waitedForLocalCA={{ waited_for_local_ca }}",
+          "refId": "A"
+        },
+        {
+          "expr": "histogram_quantile(0.99, rate(kos_agent_attachment_create_to_status_latency_seconds_bucket{waited_for_ipam=\"false\", waited_for_local_ca=\"true\"}[1m]))",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{ node }} waitedForIPAM={{ waited_for_ipam }} waitedForLocalCA={{ waited_for_local_ca }}",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "99%ile Attachment Create-to-Ready Latency secs, wait for Controllers",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "prometheus",
+      "fill": 1,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 43
+      },
+      "id": 14,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.99, rate(kos_agent_attachment_create_to_remote_ifc_latency_seconds_bucket{waited_for_ipam=\"false\", waited_for_local_ca=\"false\", remote_ca_started_last=\"false\", ready_before_vn_relevance=\"false\"}[1m]))",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{ node }}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "99%ile Attachment Create-to-Remote-Interface Latency secs, no wait for Controllers, immediately relevant",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "prometheus",
+      "fill": 1,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 50
+      },
+      "id": 15,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.99, rate(kos_agent_attachment_create_to_remote_ifc_latency_seconds_bucket{waited_for_ipam=\"false\", waited_for_local_ca=\"false\", remote_ca_started_last=\"false\", ready_before_vn_relevance=\"true\"}[1m]))",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{ node }}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "99%ile Attachment Create-to-Remote-Interface Latency secs, no wait for Controllers, not immediately relevant",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "prometheus",
+      "fill": 1,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 57
+      },
+      "id": 16,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.99, rate(kos_agent_attachment_create_to_remote_ifc_latency_seconds_bucket{waited_for_ipam=\"true\", ready_before_vn_relevance=\"false\"}[1m]))",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{ node }} waitedForIPAM={{ waited_for_ipam }} waitedForLocalCA={{ waited_for_local_ca }} remCAStartedLast={{ remote_ca_started_last }}",
+          "refId": "A"
+        },
+        {
+          "expr": "histogram_quantile(0.99, rate(kos_agent_attachment_create_to_remote_ifc_latency_seconds_bucket{waited_for_ipam=\"false\", waited_for_local_ca=\"true\", ready_before_vn_relevance=\"false\"}[1m]))",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{ node }} waitedForIPAM={{ waited_for_ipam }} waitedForLocalCA={{ waited_for_local_ca }} remCAStartedLast={{ remote_ca_started_last }}",
+          "refId": "B"
+        },
+        {
+          "expr": "histogram_quantile(0.99, rate(kos_agent_attachment_create_to_remote_ifc_latency_seconds_bucket{waited_for_ipam=\"false\", waited_for_local_ca=\"false\", remote_ca_started_last=\"true\", ready_before_vn_relevance=\"false\"}[1m]))",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{ node }} waitedForIPAM={{ waited_for_ipam }} waitedForLocalCA={{ waited_for_local_ca }} remCAStartedLast={{ remote_ca_started_last }}",
+          "refId": "C"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "99%ile Attachment Create-to-Remote-Interface Latency secs, wait for Controllers, immediately relevant",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "prometheus",
+      "fill": 1,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 64
+      },
+      "id": 18,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.99, rate(kos_agent_attachment_create_to_remote_ifc_latency_seconds_bucket{waited_for_ipam=\"true\", ready_before_vn_relevance=\"true\"}[1m]))",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{ node }} waitedForIPAM={{ waited_for_ipam }} waitedForLocalCA={{ waited_for_local_ca }} remCAStartedLast={{ remote_ca_started_last }}",
+          "refId": "A"
+        },
+        {
+          "expr": "histogram_quantile(0.99, rate(kos_agent_attachment_create_to_remote_ifc_latency_seconds_bucket{waited_for_ipam=\"false\", waited_for_local_ca=\"true\", ready_before_vn_relevance=\"true\"}[1m]))",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{ node }} waitedForIPAM={{ waited_for_ipam }} waitedForLocalCA={{ waited_for_local_ca }} remCAStartedLast={{ remote_ca_started_last }}",
+          "refId": "B"
+        },
+        {
+          "expr": "histogram_quantile(0.99, rate(kos_agent_attachment_create_to_remote_ifc_latency_seconds_bucket{waited_for_ipam=\"false\", waited_for_local_ca=\"false\", remote_ca_started_last=\"true\", ready_before_vn_relevance=\"true\"}[1m]))",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{ node }} waitedForIPAM={{ waited_for_ipam }} waitedForLocalCA={{ waited_for_local_ca }} remCAStartedLast={{ remote_ca_started_last }}",
+          "refId": "C"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "99%ile Attachment Create-to-Remote-Interface Latency secs, wait for Controllers, not immediately relevant",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "prometheus",
+      "fill": 1,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 71
+      },
+      "id": 17,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "kos_agent_vn_relevance_aggregate_delay_seconds",
+          "format": "time_series",
+          "intervalFactor": 2,
+          "legendFormat": "{{ node }}",
+          "refId": "D"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Aggregate Virtual Network Relevance Delay secs",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "prometheus",
+      "fill": 1,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 78
       },
       "id": 9,
       "legend": {
@@ -476,7 +1115,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 36
+        "y": 85
       },
       "id": 8,
       "legend": {
@@ -561,7 +1200,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 43
+        "y": 92
       },
       "id": 7,
       "legend": {
