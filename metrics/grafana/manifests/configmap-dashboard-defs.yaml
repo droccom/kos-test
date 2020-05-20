@@ -4373,6 +4373,7 @@ data:
       "editable": true,
       "gnetId": null,
       "graphTooltip": 0,
+      "id": 4,
       "links": [],
       "panels": [
         {
@@ -4515,14 +4516,14 @@ data:
               "expr": "histogram_quantile(0.99, rate(kos_ipam_attachment_create_to_address_latency_seconds_bucket[1m]))",
               "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "99%ile address",
+              "legendFormat": "99%ile address {{ contention }}",
               "refId": "A"
             },
             {
               "expr": "histogram_quantile(0.99, rate(kos_ipam_attachment_create_to_lock_latency_seconds_bucket[1m]))",
               "format": "time_series",
               "intervalFactor": 2,
-              "legendFormat": "99%ile lock",
+              "legendFormat": "99%ile lock {{ contention }}",
               "refId": "B"
             }
           ],
@@ -4573,12 +4574,98 @@ data:
           "dashLength": 10,
           "dashes": false,
           "datasource": "prometheus",
+          "description": "Fraction of attempt to allocate an address that fail because none is available",
           "fill": 1,
           "gridPos": {
             "h": 7,
             "w": 24,
             "x": 0,
             "y": 15
+          },
+          "id": 12,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "1 - rate(kos_ipam_address_contention_bucket{le=\"0\"}[1m]) / ignoring (le) rate(kos_ipam_address_contention_bucket{le=\"+Inf\"}[1m]) ",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "{{ instance }}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Address Contention",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "prometheus",
+          "fill": 1,
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 22
           },
           "id": 1,
           "legend": {
@@ -4664,7 +4751,7 @@ data:
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 22
+            "y": 29
           },
           "id": 4,
           "legend": {
@@ -4749,7 +4836,7 @@ data:
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 29
+            "y": 36
           },
           "id": 9,
           "legend": {
@@ -4834,7 +4921,7 @@ data:
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 36
+            "y": 43
           },
           "id": 8,
           "legend": {
@@ -4919,7 +5006,7 @@ data:
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 43
+            "y": 50
           },
           "id": 7,
           "legend": {
