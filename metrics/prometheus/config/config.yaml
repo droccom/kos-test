@@ -46,11 +46,6 @@ scrape_configs:
 
 # etcd servers on nodes; unsecured
 - job_name: 'kubernetes-etcd'
-  tls_config:
-    cert_file: /etc/main-etcd-client-tls/cert.pem
-    key_file: /etc/main-etcd-client-tls/key.pem
-#    insecure_skip_verify: true
-    ca_file: /etc/main-etcd-client-tls/ca.pem
   kubernetes_sd_configs:
     - role: node
   relabel_configs:
