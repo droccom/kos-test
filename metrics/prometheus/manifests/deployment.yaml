@@ -14,8 +14,7 @@ spec:
       labels:
         app: prometheus
     spec:
-      nodeSelector:
-        kos-role/data: "true"
+      hostNetwork: true
       serviceAccountName: prometheus
       initContainers:
       - name: dataprep
