@@ -39,6 +39,10 @@ scrape_configs:
   - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
     action: keep
     regex: default;kubernetes;https
+  - source_labels: [__address__]
+    regex: '(.*):([0-9]*)'
+    replacement: '127.0.0.1:$2'
+    target_label: __address__
 
 # etcd servers on nodes; unsecured
 - job_name: 'kubernetes-etcd'
