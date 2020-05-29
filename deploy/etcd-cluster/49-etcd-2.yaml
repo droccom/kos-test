@@ -1,0 +1,36 @@
+apiVersion: etcd.database.coreos.com/v1beta2
+kind: EtcdCluster
+metadata:
+  name: the-etcd-cluster-2
+  namespace: example-com
+spec:
+  size: 3
+  version: "3.4.4"
+  TLS:
+    static:
+      member:
+        peerSecret: etcd-peer
+        serverSecret: etcd-server
+      operatorSecret: etcd-client
+  pod:
+    etcdEnv:
+    - name: ETCD_METRICS
+      value: extensive
+    - name: ETCD_LISTEN_METRICS_URLS
+      value: http://0.0.0.0:9732
+    - name: ETCD_DEBUG
+      value: "true"
+    labels:
+      kos-app: kos-etcd-2
+    annotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "9732"
+    nodeSelector:
+      kos-role/netcd: "true"
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+        - topologyKey: kubernetes.io/hostname
+          labelSelector:
+            matchLabels:
+              kos-app: kos-etcd-2

@@ -42,6 +42,7 @@ spec:
         - --etcd-certfile=/etcd-certs/etcd-client.crt
         - --etcd-keyfile=/etcd-certs/etcd-client.key
         - --etcd-cafile=/etcd-certs/etcd-client-ca.crt
+        - --etcd-servers-overrides=network.example.com/iplocks#https://the-etcd-cluster-2-client:2379
         - --default-watch-cache-size=1000
         - -v=5
       volumes:

@@ -134,6 +134,7 @@ deploy-etcd: ${KOS_PERSIST}/tls/etcd/peer-secret.yaml ${KOS_PERSIST}/tls/etcd/se
 	while ! kubectl get EtcdCluster ; do sleep 5 ; done && \
 	kubectl apply -f deploy/etcd-cluster && \
 	while [ "$$(kubectl get EtcdCluster -n example-com   the-etcd-cluster -o 'jsonpath={.status.conditions[?(@.type=="Available")].status}')" != True ]; do kubectl get Pod -n example-com -l etcd_cluster=the-etcd-cluster -o wide; date; echo; sleep 30; done
+	while [ "$$(kubectl get EtcdCluster -n example-com   the-etcd-cluster-2 -o 'jsonpath={.status.conditions[?(@.type=="Available")].status}')" != True ]; do kubectl get Pod -n example-com -l etcd_cluster=the-etcd-cluster-2 -o wide; date; echo; sleep 30; done
 
 .PHONY: deploy
 deploy: deploy/main/50-d-xs.yaml deploy/main/50-ds-ca.yaml deploy/main/50-d-kcm.yaml deploy/main/70-apiservice.yaml ${KOS_PERSIST}/tls/network-api/server-secret.yaml ${KOS_PERSIST}/tls/network-api/client-secret.yaml deploy-etcd
@@ -148,6 +149,7 @@ undeploy: deploy/main/50-d-xs.yaml deploy/main/50-ds-ca.yaml deploy/main/50-d-kc
 	kubectl delete --ignore-not-found -f ${KOS_PERSIST}/tls/network-api/client-secret.yaml && \
 	! kubectl get EtcdCluster || kubectl delete --ignore-not-found -f deploy/etcd-cluster && \
 	while kubectl get EtcdCluster -n example-com the-etcd-cluster ; do sleep 15; done && \
+	while kubectl get EtcdCluster -n example-com the-etcd-cluster-2 ; do sleep 15; done && \
 	kubectl delete --ignore-not-found -f deploy/etcd-operator && \
 	kubectl delete --ignore-not-found Endpoints etcd-operator && \
 	kubectl delete --ignore-not-found crd etcdclusters.etcd.database.coreos.com && \
